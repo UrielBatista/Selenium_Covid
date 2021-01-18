@@ -7,9 +7,6 @@ if __name__ == '__main__':
         scraping = Scraping()
         scraping.scrap_and_insert()
         sleep(1)
-        
-        
-
         print('The And!!')
 
     except Exception as exception:
