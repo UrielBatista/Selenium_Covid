@@ -13,7 +13,6 @@ from time import sleep
 from pymongo import MongoClient
 
 
-
 #[brazil, venezuela, israel, poland, ireland, newyork_unitedstates]
 
 pais = ['brazil', 'venezuela', 'israel', 'poland', 'ireland', 'newyork_unitedstates', 
@@ -22,7 +21,6 @@ pais = ['brazil', 'venezuela', 'israel', 'poland', 'ireland', 'newyork_unitedsta
 'paran_brazil', 'santacatarina_brazil', 'riograndedosul_brazil', 'matogrossodosul_brazil',
 'gois_brazil', 'federaldistrict_brazil', 'tocantins_brazil', 'paraiba_brazil']
 
-
 class Scraping:
     def __init__(self):
         print('...CAPTURANDO DADOS!!...')
@@ -30,7 +28,6 @@ class Scraping:
         #Conexao com o servidor local
         self._client = MongoClient("localhost", 27017)
         self._db = self._client.Covid
-
     
     def scrap_and_insert(self):
         
@@ -51,11 +48,9 @@ class Scraping:
             
             while(pais):
 
-
                 driver.get('https://www.bing.com/covid/local/{}?cc=br'.format(pais[cont]))
                 driver.set_page_load_timeout(60)
 
-                
                 #Casos ativos
                 ativos = driver.execute_script("return document.getElementsByClassName('total')[3].innerText;")
                 if(ativos == ''):
@@ -65,15 +60,11 @@ class Scraping:
                 #Casos recuperados
                 recuperados = driver.execute_script("return document.getElementsByClassName('total')[4].children[0].innerText")
                
-
                 if(len(recuperados)):
                     print(recuperados)
 
                 if(recuperados == '-'):
                     recuperados = 'Nao existe casos recuperados'
-                
-                
-                
                 
                 #Casos fatais
                 fatais = driver.execute_script("return document.getElementsByClassName('legend')[5].innerText;")
@@ -84,8 +75,6 @@ class Scraping:
                     fatais = regex1[0]
                     print(fatais)
 
-
-
                 elif(len(regex2)):
                     fatais = regex2[0]
                     print(fatais)
@@ -93,11 +82,7 @@ class Scraping:
                 else:
                     fatais = 'Nao existe casos fatais'
                 
-                
-
-                
                 num = randrange(0, 456156)
-                
 
                 self._db.dados_covid.insert_one({
                     
@@ -109,16 +94,10 @@ class Scraping:
                 })
                 
                 cont = cont + 1
-
                 
         except Exception as exception:
             print('===========ERROR============')
             print(exception)
-
-
-    
-        
-        
 
     
           
